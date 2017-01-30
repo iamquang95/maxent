@@ -27,6 +27,7 @@ public class Option {
 	// training data, testing data file
 	protected String trainDataFile = "train.labeled";
 	protected String testDataFile = "test.labeled";
+	protected String pureDataFile = "pure.txt";
 	protected static String labelSeparator = "/";
 
 	// training log
@@ -35,6 +36,7 @@ public class Option {
 
 	protected int numTrainExps = 0; // number of training examples
 	protected int numTestExps = 0; // number of testing examples
+	protected int numPureExps = 0;
 	protected int numLabels = 0; // number of class labels
 	protected int numCps = 0; // number of context predicates
 	protected int numFeatures = 0; // number of features
@@ -109,6 +111,9 @@ public class Option {
 
 				} else if (strOpt.compareToIgnoreCase("testDataFile") == 0) {
 					testDataFile = strVal;
+
+				} else if (strOpt.compareToIgnoreCase("pureDataFile") == 0) {
+					pureDataFile = strVal;
 
 				} else if (strOpt.compareToIgnoreCase("isLogging") == 0) {
 					if (!(strVal.compareToIgnoreCase("true") == 0 || strVal.compareToIgnoreCase("false") == 0)) {

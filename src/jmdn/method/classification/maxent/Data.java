@@ -28,6 +28,8 @@ public class Data {
 	protected List<Observation> tstData = null;
 	protected List<Observation> ulbData = null;
 
+	protected List<Observation> pureData = null;
+
 	/**
 	 * Class constructor.
 	 * 
@@ -399,6 +401,9 @@ public class Data {
 
 				Observation obsr = new Observation(labelInt.intValue(), cps);
 
+				// Add text to Observation
+				obsr.originalData = line;
+
 				// add this observation to the data
 				trnData.add(obsr);
 			}
@@ -419,7 +424,7 @@ public class Data {
 
 	/**
 	 * Reading test data from a file.
-	 * 
+	 *
 	 * @param dataFile
 	 *            the file containing test data
 	 */
@@ -487,6 +492,9 @@ public class Data {
 
 				Observation obsr = new Observation(labelInt.intValue(), cps);
 
+				// Add text for Observation
+				obsr.originalData = line;
+
 				// add this observation to the data
 				tstData.add(obsr);
 			}
@@ -501,5 +509,80 @@ public class Data {
 		}
 
 		option.numTestExps = tstData.size();
+	}
+
+	/**
+	 * Reading pure data from a file.
+	 *
+	 * @param dataFile
+	 *            the file containing pure data
+	 */
+	protected void readPureData(String dataFile) {
+		if (pureData != null) {
+			pureData.clear();
+		} else {
+			pureData = new ArrayList<Observation>();
+		}
+
+		// open data file
+		BufferedReader bufferedReader;
+
+		try {
+			bufferedReader = FileLoader.getBufferredReader(dataFile, "UTF8");
+			if (bufferedReader == null) {
+				return;
+			}
+
+			System.out.println("Reading pure data to classify...");
+
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				StringTokenizer strTok = new StringTokenizer(line, " \t\r\n");
+				int len = strTok.countTokens();
+
+				if (len <= 1) {
+					// skip this invalid line
+					continue;
+				}
+
+				List<String> strCps = new ArrayList<String>();
+				for (int i = 0; i < len - 1; i++) {
+					strCps.add(strTok.nextToken());
+				}
+
+				List<Integer> intCps = new ArrayList<Integer>();
+
+				for (int i = 0; i < strCps.size(); i++) {
+					String cpStr = (String) strCps.get(i);
+					Integer cpInt = (Integer) cpStr2Int.get(cpStr);
+					if (cpInt != null) {
+						intCps.add(cpInt);
+					}
+				}
+
+				int[] cps = new int[intCps.size()];
+				for (int i = 0; i < cps.length; i++) {
+					cps[i] = ((Integer) intCps.get(i)).intValue();
+				}
+
+				Observation obsr = new Observation(cps);
+
+				// Add text for Observation
+				obsr.originalData = line;
+
+				// add this observation to the data
+				pureData.add(obsr);
+			}
+
+			bufferedReader.close();
+
+			System.out.println("Reading " + Integer.toString(pureData.size()) + " pure data completed!");
+
+		} catch (IOException e) {
+			System.out.println(e.toString());
+			return;
+		}
+
+		option.numPureExps = pureData.size();
 	}
 }

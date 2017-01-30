@@ -33,6 +33,7 @@ public class Trainer {
 		boolean isAll = (args[0].compareToIgnoreCase("-all") == 0);
 		boolean isTrn = (args[0].compareToIgnoreCase("-trn") == 0);
 		boolean isTst = (args[0].compareToIgnoreCase("-tst") == 0);
+		boolean isCreateData = (args[0].compareToIgnoreCase("-crtData") == 0);
 
 		// create option object
 		Option option = new Option(modelDir);
@@ -160,6 +161,40 @@ public class Trainer {
 			model.evaluation.evaluate(null);
 
 			finModel.close();
+		}
+
+		if (isCreateData) {
+			// Create new labeled Data
+
+			finModel = option.openModelFile();
+			if (finModel == null) {
+				System.out.println("Couldn't open model file");
+				return;
+			}
+
+			data = new Data(option);
+			data.readCpMaps(finModel);
+			data.readLbMaps(finModel);
+			data.readPureData(option.modelDirectory + File.separator + option.pureDataFile);
+
+			dictionary = new Dictionary(option, data);
+			dictionary.readDictionary(finModel);
+
+			featureGenerator = new FeatureGenerator(option, data, dictionary);
+			featureGenerator.readFeatures(finModel);
+
+			inference = new Inference();
+			evaluation = new Evaluation();
+
+			model = new Model(option, data, dictionary, featureGenerator, null, inference, evaluation);
+
+			//TODO: NEED FIX
+
+			model.doInference(model.data.tstData);
+			model.evaluation.evaluate(null);
+
+			finModel.close();
+
 		}
 
 	}
