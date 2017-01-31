@@ -6,6 +6,8 @@ package jmdn.method.classification.maxent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+
 import jmdn.base.struct.pair.PairIntDouble;
 
 /**
@@ -66,6 +68,21 @@ public class Inference {
 		}
 
 		observation.modelLabel = maxLabel;
+
+		// For create data, only for 2 classes
+		if (true) {
+			double other = temp[0];
+			if (Math.abs(other - max) < 0.0000000001) {
+				other = temp[1];
+			}
+			double v1 = Math.exp(max);
+			double v2 = Math.exp(other);
+			double p1 = v1/(v1+v2);
+			if (p1 >= 0.95) {
+				// System.out.print((observation.humanLabel == observation.modelLabel) ? "Correct": "");
+				System.out.println(observation.originalData + " " + p1*100 + " " + maxLabel + "---------------\n");
+			}
+		}
 	}
 
 	/**
