@@ -189,11 +189,8 @@ public class Trainer {
 			featureGenerator.readFeatures(finModel);
 
 			inference = new Inference();
-			evaluation = new Evaluation();
 
-			model = new Model(option, data, dictionary, featureGenerator, null, inference, evaluation);
-
-			//TODO: NEED FIX
+			model = new Model(option, data, dictionary, featureGenerator, null, inference, null);
 
 			model.doInference(model.data.pureData);
 
