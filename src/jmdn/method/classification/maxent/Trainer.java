@@ -190,8 +190,7 @@ public class Trainer {
 
 			//TODO: NEED FIX
 
-			model.doInference(model.data.tstData);
-			model.evaluation.evaluate(null);
+			model.doInference(model.data.pureData);
 
 			finModel.close();
 
@@ -212,7 +211,7 @@ public class Trainer {
 		}
 
 		if (!(args[0].compareToIgnoreCase("-all") == 0 || args[0].compareToIgnoreCase("-trn") == 0 || 
-				args[0].compareToIgnoreCase("-tst") == 0)) {
+				args[0].compareToIgnoreCase("-tst") == 0 || args[0].compareToIgnoreCase("-crtData") == 0)) {
 			return false;
 		}
 

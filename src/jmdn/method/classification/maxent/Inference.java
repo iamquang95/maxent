@@ -80,7 +80,7 @@ public class Inference {
 			double p1 = v1/(v1+v2);
 			if (p1 >= 0.95) {
 				// System.out.print((observation.humanLabel == observation.modelLabel) ? "Correct": "");
-				System.out.println(observation.originalData + " " + p1*100 + " " + maxLabel + "---------------\n");
+				System.out.println(observation.originalData + "\n" + p1*100 + " " + maxLabel + "\n---------------");
 			}
 		}
 	}

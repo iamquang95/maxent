@@ -4,3 +4,4 @@ out/
 *.tagged
 models/sample/trainlog.txt
 model.txt
+TokedData.txt

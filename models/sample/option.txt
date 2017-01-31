@@ -1,10 +1,11 @@
 trainDataFile=train.tagged
 testDataFile=test.tagged
+pureDataFile=TokedData.txt
 
 cpRareThreshold=0
 fRareThreshold=0
 
 numIterations=50
 
-evaluateDuringTraining=true
+evaluateDuringTraining=false
 saveBestModel=true
