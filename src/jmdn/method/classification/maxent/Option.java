@@ -16,6 +16,8 @@ import jmdn.base.util.filesystem.FileLoader;
  * @since 25-08-2014
  */
 public class Option {
+	// running mode (0 == all, 1 = train, 2 = test, 3 = create data)
+	protected int runningMode = 0;
 	// model directory
 	protected String modelDirectory = ".";
 	// model file
@@ -29,6 +31,10 @@ public class Option {
 	protected String testDataFile = "test.labeled";
 	protected String pureDataFile = "pure.txt";
 	protected static String labelSeparator = "/";
+
+	// output file for create data only for 2 lables
+	protected String negOutputFile = "neg.txt";
+	protected String posOutputFile = "pos.txt";
 
 	// training log
 	protected String trainLogFile = "trainlog.txt";
@@ -114,6 +120,12 @@ public class Option {
 
 				} else if (strOpt.compareToIgnoreCase("pureDataFile") == 0) {
 					pureDataFile = strVal;
+
+				} else if (strOpt.compareToIgnoreCase("negOutputFile") == 0) {
+					 negOutputFile = strVal;
+
+				} else if (strOpt.compareToIgnoreCase("posOutputFile") == 0) {
+					posOutputFile = strVal;
 
 				} else if (strOpt.compareToIgnoreCase("isLogging") == 0) {
 					if (!(strVal.compareToIgnoreCase("true") == 0 || strVal.compareToIgnoreCase("false") == 0)) {

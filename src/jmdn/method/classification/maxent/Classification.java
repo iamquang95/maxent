@@ -136,7 +136,7 @@ public class Classification {
 		Observation obsr = new Observation(intCps);
 
 		// doing classification
-		inference.classify(obsr);
+		inference.classify(obsr, false, null, null); // won't print to files
 
 		String lbStr = (String) data.getLbInt2Str().get(new Integer(obsr.modelLabel));
 		if (lbStr != null) {

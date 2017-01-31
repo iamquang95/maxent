@@ -5,3 +5,5 @@ out/
 models/sample/trainlog.txt
 model.txt
 TokedData.txt
+neg.txt
+pos.txt

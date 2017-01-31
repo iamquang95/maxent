@@ -4,6 +4,8 @@
 
 package jmdn.method.classification.maxent;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -44,7 +46,7 @@ public class Inference {
 	 * @param observation
 	 *            the observation to be classified
 	 */
-	public synchronized void classify(Observation observation) {
+	public synchronized void classify(Observation observation, boolean isCreateOutput, PrintWriter negWriter, PrintWriter posWriter) {
 		int i;
 
 		for (i = 0; i < numLabels; i++) {
@@ -70,7 +72,7 @@ public class Inference {
 		observation.modelLabel = maxLabel;
 
 		// For create data, only for 2 classes
-		if (true) {
+		if (isCreateOutput) {
 			double other = temp[0];
 			if (Math.abs(other - max) < 0.0000000001) {
 				other = temp[1];
@@ -79,8 +81,13 @@ public class Inference {
 			double v2 = Math.exp(other);
 			double p1 = v1/(v1+v2);
 			if (p1 >= 0.95) {
-				// System.out.print((observation.humanLabel == observation.modelLabel) ? "Correct": "");
-				System.out.println(observation.originalData + "\n" + p1*100 + " " + maxLabel + "\n---------------");
+//				System.out.print((observation.humanLabel == observation.modelLabel) ? "Correct": "");
+//				System.out.println(observation.originalData + "\n" + p1*100 + " " + maxLabel + "\n---------------");
+				if (maxLabel == 0) {
+					negWriter.write(observation.originalData + " " + maxLabel + "\n");
+				} else {
+					posWriter.write(observation.originalData + " " + maxLabel + "\n");
+				}
 			}
 		}
 	}
@@ -122,10 +129,18 @@ public class Inference {
 	 *            a list of input data observations
 	 */
 	public void doInference(List<Observation> data) {
-		for (int i = 0; i < data.size(); i++) {
-			Observation obsr = (Observation) data.get(i);
+		try {
+			PrintWriter negWriter = new PrintWriter(model.option.negOutputFile, "UTF-8");
+			PrintWriter posWriter = new PrintWriter(model.option.posOutputFile, "UTF-8");
+			for (int i = 0; i < data.size(); i++) {
+				Observation obsr = data.get(i);
 
-			classify(obsr);
+				classify(obsr, model.option.runningMode == 3, negWriter, posWriter);
+			}
+			negWriter.close();
+			posWriter.close();
+		} catch (IOException e) {
+			System.out.print(e.getMessage());
 		}
 	}
 }

@@ -53,6 +53,8 @@ public class Trainer {
 		if (isAll) {
 			// both training and testing
 
+			option.runningMode = 0;
+
 			PrintWriter flog = option.openTrainLogFile();
 			if (flog == null) {
 				System.out.println("Couldn't create training log file!");
@@ -96,6 +98,7 @@ public class Trainer {
 
 		if (isTrn) {
 			// training only
+			option.runningMode = 1;
 
 			PrintWriter flog = option.openTrainLogFile();
 			if (flog == null) {
@@ -134,6 +137,7 @@ public class Trainer {
 
 		if (isTst) {
 			// testing only
+			option.runningMode = 2;
 
 			finModel = option.openModelFile();
 			if (finModel == null) {
@@ -165,6 +169,7 @@ public class Trainer {
 
 		if (isCreateData) {
 			// Create new labeled Data
+			option.runningMode = 3;
 
 			finModel = option.openModelFile();
 			if (finModel == null) {
